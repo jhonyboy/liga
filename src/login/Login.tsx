@@ -1,10 +1,18 @@
 import { useState } from "react";
+import { useStore } from '../state/state';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  
+    const navigate = useNavigate();
     const [email,setemail] = useState("");
     const [password,setpassword] = useState("");
     const [showError, setShowError] = useState(false);
+
+    const emaill = useStore((state) => state.emaill);
+    const setEmail = useStore((state) => state.setEmail );
+    const token = useStore((state) => state.token);
+    const setToken = useStore((state) => state.setToken );
+    console.log("tokenn en login ==> ", token);
 
     const login = async () => {
     console.log("login petition ==> " , email, password );
@@ -16,7 +24,7 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
+      const response = await fetch("http://localhost:3000/api/login/veryfyCredentials", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,6 +33,12 @@ export default function Login() {
       });
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
+      if( data.status ){
+        setToken(data.token);
+        setEmail(email);
+        console.log("token guardado en el estado global ==> ", token);
+        navigate('/Panel');
+      }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }
