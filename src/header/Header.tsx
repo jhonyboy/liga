@@ -6,18 +6,29 @@ export default function Navbar() {
   const [isActive, setIsActive] = useState(false);
   const [activeItem, setActiveItem] = useState("liga");
   const [isLigaOpen, setIsLigaOpen] = useState(false);
+  const [isTorneoOpen, setIsTorneoOpen] = useState(false);
 
   const dropdownRef = useRef(null);
+  const dropdownTorneoRef = useRef(null);
 
   const handleClick = (item) => {
     console.log("Clicked:", item);
     setActiveItem(item);
     setIsActive(false);
     setIsLigaOpen(false); // cerrar submenu
+    setIsTorneoOpen(false); // cerrar submenu
 
     if (item === "crear-liga") {
       console.log("Navigate to Crear Liga");
       navigate("/ligas/crearLiga");
+    }
+    if (item === "crear-torneo") {
+      console.log("Navigate to Crear Torneo");
+      navigate("/torneo/CrearTorneo");
+    }
+    if (item === "mis-torneos") {
+      console.log("Navigate to mis torneos");
+      navigate("/torneo/MisTorneos");
     }
 
   };
@@ -25,8 +36,9 @@ export default function Navbar() {
   // cerrar dropdown al hacer click fuera
   useEffect(() => {
     const handleOutsideClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target) &&  dropdownTorneoRef.current && !dropdownTorneoRef.current.contains(e.target) ) {
         setIsLigaOpen(false);
+        setIsTorneoOpen(false);
       }
     };
 
@@ -55,7 +67,6 @@ export default function Navbar() {
       <div className={`navbar-menu ${isActive ? "is-active" : ""}`}>
         <div className="navbar-start">
 
-          {/* LIGA CON CLICK */}
           <div
             ref={dropdownRef}
             className={`navbar-item has-dropdown ${
@@ -79,9 +90,29 @@ export default function Navbar() {
 
               <a
                 className="navbar-item"
-                onClick={() => handleClick("ver-ligas")}
+                onClick={() => handleClick("crear-torneo") }
               >
-                Ver Ligas
+                Crear Torneo
+              </a>
+            </div>
+          </div>
+          
+          <div ref={dropdownRef} className={`navbar-item has-dropdown ${ isTorneoOpen ? "is-active" : ""
+            }`}
+          >
+            <a
+              className="navbar-link"
+              onClick={() => setIsTorneoOpen(!isTorneoOpen)}
+            >
+              Torneos
+            </a>
+
+            <div className="navbar-dropdown">
+              <a
+                className="navbar-item"
+                onClick={() => handleClick("mis-torneos") }
+              >
+                Mis torneos
               </a>
             </div>
           </div>

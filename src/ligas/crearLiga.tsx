@@ -10,7 +10,6 @@ export default function CrearLiga() {
   const [direccion, setDireccion] = useState("");
   const [NoEquipos, setNoEquipos] = useState(0);
   const [formato, setFormato] = useState(1);
-  //const notify = () => toast('Wow so easy !');
   const notifyError = () => {
     toast.warn("Error al crear la liga, por favor intente nuevamente.", {
       position: "top-center",
@@ -37,9 +36,7 @@ export default function CrearLiga() {
     if(  !nombre || !direccion || NoEquipos <= 0 || !formato) {
         alert("Por favor, completa todos los campos correctamente.");
     }
-    
     peticion();
-
 };
 
 const peticion = async () => {
@@ -63,7 +60,6 @@ const peticion = async () => {
     } else {
       notifyError();
     }
-    
   };
 
 

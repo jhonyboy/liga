@@ -1,12 +1,36 @@
 import { useStore } from "../state/state";
 import Header from "../header/Header";
 import league from "../assets/league.jpg";
+import { Navigate, useNavigate } from "react-router-dom";
+import { ToastContainer , toast } from "react-toastify";
+import { useEffect } from "react";
+
 export default function Panel() {
+  const navegar = useNavigate();
   const token = useStore((state) => state.token);
   const emaill = useStore((state) => state.emaill);
+
+  const notifyError = () => {
+    toast.warn("Token no existe o sesion caducada.", {
+      position: "top-center",
+      autoClose: 2000,
+    })
+  }
+
+  useEffect(() => {
+    if( token === "") {
+      notifyError();
+      setTimeout(() => {
+        navegar("/");
+      }, 2000);
+    }
+  }, [token,navegar]);
+
   return (
     <>
-      <Header />
+      <ToastContainer />
+      {
+        token === "" ? '' : <><Header />
       <h1>Panel de Control</h1>
       <p>Bienvenido, {emaill}!</p>
 
@@ -81,7 +105,10 @@ export default function Panel() {
             </div>
           </div>
         </div>
-      </div>
+      </div> 
+      </>
+      }
+      
     </>
   );
 }

@@ -1,0 +1,14 @@
+name: Local Config
+version: 1.0.0
+schema: v1
+
+models:
+  - name: Qwen3B
+    provider: openai
+    model: qwen3-8b
+    apiBase: http://127.0.0.1:1234/v1
+    apiKey: lm-studio
+    roles:
+      - chat
+      - apply
+      - autocomplete
