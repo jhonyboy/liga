@@ -13,8 +13,7 @@ function App() {
 
   return (
     <>
-      <div className='container' >
-        <div className="is-flex is-flex-direction-column" style={{ minHeight: "100vh" }} >
+      <div className="container mx-auto px-4">
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Login />} />
@@ -24,9 +23,8 @@ function App() {
               <Route path='/torneo/MisTorneos' element={<MisTorneos />} />
             </Routes>
           </BrowserRouter>
-        </div>
       </div>
-      <Footer />
+      
     </>
   )
 }

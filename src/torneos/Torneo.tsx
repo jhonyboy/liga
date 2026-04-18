@@ -19,28 +19,26 @@ export default function Torneo() {
     toast.warn("Token no existe o sesion caducada.", {
       position: "top-center",
       autoClose: 2000,
-    })
+    });
   };
 
-  const notificacion = ( estado : boolean , message : string ) => {
-    
+  const notificacion = (estado: boolean, message: string) => {
     const config = {
       position: "top-center" as const,
       autoClose: 2000,
     };
 
-    (estado ? toast.success : toast.warn) (message, config );
-
-  }
+    (estado ? toast.success : toast.warn)(message, config);
+  };
 
   useEffect(() => {
-      if( token === "") {
-        notifyError();
-        setTimeout(() => {
-          navegar("/");
-        }, 2000);
-      }
-    }, [token,navegar]);
+    if (token === "") {
+      notifyError();
+      setTimeout(() => {
+        navegar("/");
+      }, 2000);
+    }
+  }, [token, navegar]);
 
   const crearTorneo = () => {
     console.log("Crear torneo con datos:", {
@@ -49,8 +47,13 @@ export default function Torneo() {
       NoEquipos,
       formato,
     });
-    
-    if ( nombre.trim() === "" || direccion.trim() === "" || NoEquipos <= 0 || !formato ) {
+
+    if (
+      nombre.trim() === "" ||
+      direccion.trim() === "" ||
+      NoEquipos <= 0 ||
+      !formato
+    ) {
       toast.error("Por favor, complete todos los campos requeridos.", {
         position: "top-center",
         autoClose: 2000,
@@ -69,125 +72,109 @@ export default function Torneo() {
       });
       const respuesta = await peticion.json();
       console.log("Respuesta del servidor:", respuesta);
-      if( respuesta.status ){
+      if (respuesta.status) {
         setNombre("");
         setDireccion("");
         setNoEquipos(0);
         setFormato(1);
       }
-      notificacion(  respuesta.status , respuesta.message );
-    } 
+      notificacion(respuesta.status, respuesta.message);
+    };
     peticion();
   };
-
-
 
   return (
     <>
       <ToastContainer />
-      {
-        token !== null ? (
+      {token !== null ? (
         <>
           <Header />
-          <section
-            className="section is-flex is-align-items-center is-justify-content-center"
-            style={{ minHeight: "100vh" }}
+          <section className="min-h-screen flex items-center justify-center bg-base-200">
+  <div className="w-full max-w-lg">
+    <div className="card bg-base-100 shadow-xl">
+      <div className="card-body space-y-4">
+        
+        <h1 className="text-2xl font-bold text-center">
+          Crear Torneo ⚽
+        </h1>
+
+        {/* Nombre */}
+        <div className="form-control w-full">
+          <label className="label pb-1">
+            <span className="label-text">Nombre del torneo</span>
+          </label>
+          <input
+            value={nombre}
+            type="text"
+            placeholder="Torneo..."
+            className="input input-bordered w-full"
+            onChange={(e) => setNombre(e.target.value)}
+          />
+        </div>
+
+        {/* Dirección */}
+        <div className="form-control w-full">
+          <label className="label pb-1">
+            <span className="label-text">Dirección</span>
+          </label>
+          <input
+            value={direccion}
+            onChange={(e) => setDireccion(e.target.value)}
+            type="text"
+            placeholder="Dirección..."
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        {/* Número de equipos */}
+        <div className="form-control w-full">
+          <label className="label pb-1">
+            <span className="label-text">Número de Equipos</span>
+          </label>
+          <input
+            type="number"
+            min={1}
+            max={100}
+            value={NoEquipos}
+            onChange={(e) =>
+              setNoEquipos(parseInt(e.target.value) || 0)
+            }
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        {/* Formato */}
+        <div className="form-control w-full">
+          <label className="label pb-1">
+            <span className="label-text">Formato de la liga</span>
+          </label>
+          <select
+            value={formato}
+            onChange={(e) => setFormato(parseInt(e.target.value))}
+            className="select select-bordered w-full"
           >
-            <div className="container">
-              <div className="columns is-centered">
-                <div className="column is-half">
-                  <div className="box">
-                    <h1 className="title has-text-centered">Crear Torneo ⚽</h1>
+            <option value={1}>Por grupos</option>
+            <option value={2}>Tabla general</option>
+          </select>
+        </div>
 
-                    <div className="field">
-                      <label className="label">Nombre del torneo</label>
-                      <div className="control">
-                        <input
-                          value={nombre}
-                          className="input"
-                          type="text"
-                          placeholder="Torneo..."
-                          onChange={(e) => setNombre(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
+        {/* Botón */}
+        <button
+          className="btn btn-primary w-full mt-2"
+          onClick={crearTorneo}
+        >
+          Guardar
+        </button>
 
-                    <div className="field" style={{ display: "none" }}>
-                      <label className="label">Direccion</label>
-                      <div className="control">
-                        <input
-                          value={direccion}
-                          onChange={(e) => setDireccion(e.target.value)}
-                          className="input"
-                          type="text"
-                          placeholder="Direccion..."
-                        />
-                      </div>
-                    </div>
+      </div>
+    </div>
+  </div>
 
-                    <div className="field">
-                      <label className="label">Direccion</label>
-                      <div className="control">
-                        <input
-                          value={direccion}
-                          onChange={(e) => setDireccion(e.target.value)}
-                          className="input"
-                          type="text"
-                          placeholder="Direccion..."
-                        />
-                      </div>
-                    </div>
-
-                    <div className="field">
-                      <label className="label">Número de Equipos</label>
-                      <div className="control">
-                        <input
-                          className="input"
-                          type="number"
-                          min={1}
-                          max={100}
-                          value={NoEquipos}
-                          onChange={(e) =>
-                            setNoEquipos(parseInt(e.target.value) || 0)
-                          }
-                        />
-                      </div>
-                    </div>
-
-                    <div className="field">
-                      <label className="label">Formato de la liga</label>
-                      <div className="control">
-                        <div className="select is-fullwidth">
-                          <select
-                            value={formato}
-                            onChange={(e) =>
-                              setFormato(parseInt(e.target.value))
-                            }
-                          >
-                            <option value={1}>Por grupos</option>
-                            <option value={2}>Tabla general</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="field">
-                      <button
-                        className="button is-primary is-fullwidth"
-                        onClick={crearTorneo}
-                      >
-                        Guardar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="grid place-items-center h-dvh bg-zinc-900/50">
-              <ToastContainer />
-            </div>
-          </section>
+  {/* Toast */}
+  <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+    <ToastContainer />
+  </div>
+</section>
         </>
       ) : (
         ""

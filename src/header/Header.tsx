@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -30,13 +30,17 @@ export default function Navbar() {
       console.log("Navigate to mis torneos");
       navigate("/torneo/MisTorneos");
     }
-
   };
 
   // cerrar dropdown al hacer click fuera
   useEffect(() => {
     const handleOutsideClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target) &&  dropdownTorneoRef.current && !dropdownTorneoRef.current.contains(e.target) ) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target) &&
+        dropdownTorneoRef.current &&
+        !dropdownTorneoRef.current.contains(e.target)
+      ) {
         setIsLigaOpen(false);
         setIsTorneoOpen(false);
       }
@@ -47,88 +51,46 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="navbar is-primary" role="navigation">
-      <div className="navbar-brand">
-        <a className="navbar-item">
-          <strong>Mi App</strong>
-        </a>
-
-        <a
-          role="button"
-          className={`navbar-burger ${isActive ? "is-active" : ""}`}
-          onClick={() => setIsActive(!isActive)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </a>
-      </div>
-
-      <div className={`navbar-menu ${isActive ? "is-active" : ""}`}>
-        <div className="navbar-start">
-
-          <div
-            ref={dropdownRef}
-            className={`navbar-item has-dropdown ${
-              isLigaOpen ? "is-active" : ""
-            }`}
-          >
-            <a
-              className="navbar-link"
-              onClick={() => setIsLigaOpen(!isLigaOpen)}
-            >
-              Liga
-            </a>
-
-            <div className="navbar-dropdown">
-              <a
-                className="navbar-item"
-                onClick={() => handleClick("crear-liga")}
-              >
-                Crear Liga
-              </a>
-
-              <a
-                className="navbar-item"
-                onClick={() => handleClick("crear-torneo") }
-              >
-                Crear Torneo
-              </a>
-            </div>
-          </div>
-          
-          <div ref={dropdownRef} className={`navbar-item has-dropdown ${ isTorneoOpen ? "is-active" : ""
-            }`}
-          >
-            <a
-              className="navbar-link"
-              onClick={() => setIsTorneoOpen(!isTorneoOpen)}
-            >
-              Torneos
-            </a>
-
-            <div className="navbar-dropdown">
-              <a
-                className="navbar-item"
-                onClick={() => handleClick("mis-torneos") }
-              >
-                Mis torneos
-              </a>
-            </div>
-          </div>
-
-          {/* OTRO ITEM */}
-          <a
-            className={`navbar-item ${
-              activeItem === "jugadores" ? "is-active" : ""
-            }`}
-            onClick={() => handleClick("jugadores")}
-          >
-            Jugadores
-          </a>
-
+    <>
+      <div className="navbar bg-base-100 shadow-sm">
+        <div className="flex-1">
+          <a className="btn btn-ghost text-xl">daisyUI</a>
+        </div>
+        <div className="flex-none">
+          <ul className="menu menu-horizontal px-1">
+            <li>
+              <details>
+                <summary>Liga</summary>
+                <ul className="bg-base-100 rounded-t-none p-2">
+                  <li>
+                    <a onClick={() => handleClick("crear-liga")}>Crear liga</a>
+                  </li>
+                  <li>
+                    <a onClick={() => handleClick("crear-torneo")}>
+                      Crear torneo
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>Torneos</summary>
+                <ul className="bg-base-100 rounded-t-none p-2">
+                  <li>
+                    <a onClick={() => handleClick("mis-torneos")}>
+                      Mis torneos
+                    </a>
+                  </li>
+                  <li>
+                    <a onClick={() => handleClick("jugadores")}>Jugadores</a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
         </div>
       </div>
-    </nav>
+    </>
   );
 }

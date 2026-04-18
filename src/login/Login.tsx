@@ -1,43 +1,47 @@
 import { useState } from "react";
-import { useStore } from '../state/state';
-import { useNavigate } from 'react-router-dom';
+import { useStore } from "../state/state";
+import { useNavigate } from "react-router-dom";
+import { Button } from "flowbite-react";
 
 export default function Login() {
-    const navigate = useNavigate();
-    const [email,setemail] = useState("");
-    const [password,setpassword] = useState("");
-    const [showError, setShowError] = useState(false);
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showError, setShowError] = useState(false);
 
-    const emaill = useStore((state) => state.emaill);
-    const setEmail = useStore((state) => state.setEmail );
-    const token = useStore((state) => state.token);
-    const setToken = useStore((state) => state.setToken );
-    console.log("tokenn en login ==> ", token);
+  const emaill = useStore((state) => state.emaill);
+  //const setEmail = useStore((state) => state.setEmail);
+  const token = useStore((state) => state.token);
+  const setToken = useStore((state) => state.setToken);
+  console.log("tokenn en login ==> ", token);
 
-    const login = async () => {
-    console.log("login petition ==> " , email, password );
+  const login = async () => {
+    console.log("login petition ==> ", email, password);
 
-    if( email == "" || password == "" ) {
+    if (email == "" || password == "") {
       console.error("Por favor, complete todos los campos.");
       setShowError(true);
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/login/veryfyCredentials", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "http://localhost:3000/api/login/veryfyCredentials",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
         },
-        body: JSON.stringify( { email, password } ),
-      });
+      );
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      if( data.status ){
+      if (data.status) {
         setToken(data.token);
         setEmail(email);
         console.log("token guardado en el estado global ==> ", token);
-        navigate('/Panel');
+        navigate("/Panel");
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
@@ -45,80 +49,48 @@ export default function Login() {
   };
 
   return (
+    <>
+      <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+        <div className="card w-full max-w-md bg-base-100 shadow-xl">
+          <div className="card-body">
+            <h2 className="text-2xl font-bold text-center">Login</h2>
 
-    <section className="hero is-fullheight ">
-        {
-            showError && (  
-                <div className="notification is-danger " id='llenado' style={{ maxWidth:'500px', marginLeft:'auto', marginRight:'auto' }} >
-                    <button className="delete"></button>
-                    Por favor, complete todos los campos.
-                </div>
-            )
-        }
-        
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Correo</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                placeholder="correo@ejemplo.com"
+                className="input input-bordered w-full"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-        <div className="notification is-danger" id='incorrecto' style={{ display:'none' }} >
-            <button className="delete"></button>
-            Usuario/Contrasena incorrectos.
-        </div>
-      <div className="hero-body">
-        <div className="container">
-          <div className="columns is-centered">
-            <div className="column is-12-mobile is-8-tablet is-5-desktop">
-              
-              <div className="box">
-                <h1 className="title has-text-centered">Iniciar Sesión</h1>
+            {/* Password */}
+            <div className="form-control mt-4">
+              <label className="label">
+                <span className="label-text">Contraseña</span>
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={password}
+                placeholder="********"
+                className="input input-bordered w-full"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
 
-                  <div className="field">
-                    <label className="label">Correo</label>
-                    <div className="control has-icons-left">
-                      <input
-                        className="input"
-                        type="email"
-                        name="email"
-                        placeholder="ejemplo@email.com"
-                        value={email}
-                        onChange={(e) => setemail(e.target.value)}
-                        required
-                      />
-                      <span className="icon is-small is-left">
-                        <i className="fas fa-envelope"></i>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Password */}
-                  <div className="field">
-                    <label className="label">Contraseña</label>
-                    <div className="control has-icons-left">
-                      <input
-                        className="input"
-                        type="password"
-                        name="password"
-                        placeholder="********"
-                        value={password}
-                        onChange={(e) => setpassword(e.target.value)}
-                        required
-                      />
-                      <span className="icon is-small is-left">
-                        <i className="fas fa-lock"></i>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Botón */}
-                  <div className="field">
-                    <button className="button is-primary is-fullwidth" onClick={login} >
-                      Ingresar
-                    </button>
-                  </div>
-              </div>
-
+            {/* Botón */}
+            <div className="mt-6">
+              <button className="btn btn-primary w-full" onClick={login} >Iniciar sesión</button>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    
+    </>
   );
 }

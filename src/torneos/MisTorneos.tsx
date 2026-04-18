@@ -41,7 +41,7 @@ export default function MisTorneos() {
 	<>
 		<Header />
 		<div>
-			<BarMenuOwner />
+			
 	  		<h1>Mis Torneos</h1>
 			<div style={{ textAlign:'center' }} >
 				<div className="select is-primary">

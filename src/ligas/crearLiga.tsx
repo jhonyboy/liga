@@ -66,93 +66,108 @@ const peticion = async () => {
   return (
     <>
       <Header />
-      <section
-        className="section is-flex is-align-items-center is-justify-content-center"
-        style={{ minHeight: "100vh" }}
-      >
-        <div className="container">
-          <div className="columns is-centered">
-            <div className="column is-half">
-              <div className="box">
-                <h1 className="title has-text-centered">Crear Liga ⚽</h1>
+      <section className="min-h-screen flex items-center justify-center bg-base-200">
+  <div className="w-full max-w-lg">
+    <div className="card bg-base-100 shadow-xl">
+      <div className="card-body">
+        
+        <h1 className="text-2xl font-bold text-center">
+          Crear Liga ⚽
+        </h1>
 
-                <div className="field">
-                  <label className="label">Nombre de la Liga</label>
-                  <div className="control">
-                    <input
-                        value={nombre}
-                      className="input"
-                      type="text"
-                      placeholder="Liga..."
-                      onChange={(e) => setNombre(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="field" style={{ display:'none' }} >
-                  <label className="label">Nombre del torneo</label>
-                  <div className="control">
-                    <input
-                        value={torneo}
-                        onChange={(e) => setTorneo(e.target.value)}
-                      className="input"
-                      type="text"
-                      placeholder="Torneo..."
-                      
-                    />
-                  </div>
-                </div>
-
-                <div className="field">
-                  <label className="label">Direccion</label>
-                  <div className="control">
-                    <input
-                        value={direccion}
-                        onChange={(e) => setDireccion(e.target.value)}
-                      className="input"
-                      type="text"
-                      placeholder="Direccion..."
-                    />
-                  </div>
-                </div>
-
-                <div className="field">
-                  <label className="label">Número de Equipos</label>
-                  <div className="control">
-                    <input className="input" type="number" min={1} value={NoEquipos} onChange={(e) => setNoEquipos(parseInt(e.target.value) || 0)} />
-                  </div>
-                </div>
-
-                <div className="field">
-                  <label className="label">Formato de la liga</label>
-                  <div className="control">
-                    <div className="select is-fullwidth">
-                      <select value={formato} onChange={(e) => setFormato(parseInt(e.target.value))}>
-                        <option value={1}>Por grupos</option>
-                        <option value={2}>Tabla general</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="field">
-                  <button
-                    className="button is-primary is-fullwidth"
-                    onClick={crearLiga}
-                  >
-                    Guardar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Nombre */}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Nombre de la Liga</span>
+          </label>
+          <input
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            type="text"
+            placeholder="Liga..."
+            className="input input-bordered w-full"
+            required
+          />
         </div>
-        <div className="grid place-items-center h-dvh bg-zinc-900/50">
-      
-      <ToastContainer />
+
+        {/* Torneo (oculto) */}
+        <div className="form-control w-full hidden">
+          <label className="label">
+            <span className="label-text">Nombre del torneo</span>
+          </label>
+          <input
+            value={torneo}
+            onChange={(e) => setTorneo(e.target.value)}
+            type="text"
+            placeholder="Torneo..."
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        {/* Dirección */}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Dirección</span>
+          </label>
+          <input
+            value={direccion}
+            onChange={(e) => setDireccion(e.target.value)}
+            type="text"
+            placeholder="Dirección..."
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        {/* Número de equipos */}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Número de Equipos</span>
+          </label>
+          <input
+            type="number"
+            min={1}
+            value={NoEquipos}
+            onChange={(e) =>
+              setNoEquipos(parseInt(e.target.value) || 0)
+            }
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        {/* Formato */}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Formato de la liga</span>
+          </label>
+          <select
+            value={formato}
+            onChange={(e) => setFormato(parseInt(e.target.value))}
+            className="select select-bordered w-full"
+          >
+            <option value={1}>Por grupos</option>
+            <option value={2}>Tabla general</option>
+          </select>
+        </div>
+
+        {/* Botón */}
+        <div className="mt-4">
+          <button
+            className="btn btn-primary w-full"
+            onClick={crearLiga}
+          >
+            Guardar
+          </button>
+        </div>
+
+      </div>
     </div>
-      </section>
+  </div>
+
+  {/* Toast */}
+  <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
+    <ToastContainer />
+  </div>
+</section>
     </>
   );
 }
